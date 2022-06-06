@@ -1,0 +1,214 @@
+   /*移动端*/
+   /*媒体查询*/
+   @media screen and (max-width:800px) {
+       .A {
+           /*铺满屏幕*/
+           position: absolute;
+           top: 0;
+           bottom: 0;
+           left: 0;
+           right: 0;
+           /*样式*/
+           width: 100%;
+           height: 2100px;
+           background-color: rgb(24, 24, 24);
+
+       }
+
+       .b {
+           background-color: pink;
+           width: 100%;
+           height: 730px;
+           /*b父级定位点dwb*/
+           position: relative;
+       }
+
+       .zztp {
+           width: 100%;
+           height: 730px;
+       }
+
+       .yyapihz {
+           /*dwb盒子决对定位yyapi*/
+           width: 100%;
+           height: 100px;
+           font-size: 16px;
+           position: absolute;
+           top: 300px;
+           left: 0px;
+       }
+
+       .yyapitxt {
+           /*一言API文本*/
+           text-align: center;
+           font-weight: bolder;
+           color: black;
+       }
+
+       .wbhz {
+           /*dwb绝对定位文本盒子xia*/
+           width: 100%;
+           height: 20px;
+           font-size: 16px;
+           position: absolute;
+           top: 600px;
+           left: 0px;
+       }
+
+       .xia {
+           /*wbhz内文字*/
+           position: relative;
+           /*id name*/
+           animation-name: example;
+           animation-duration: 4s;
+           animation-iteration-count: infinite;
+           font-weight: 900;
+
+       }
+
+       /*上下动画*/
+       @keyframes example {
+           0% {
+               color: white;
+               left: 0px;
+               top: 0px;
+           }
+
+           50% {
+               color: black;
+               left: 0px;
+               top: 20px;
+           }
+
+           100% {
+               color: white;
+               left: 0px;
+               top: 0px;
+           }
+       }
+
+       /*标识个人简介*/
+       .bsjj {
+           width: 80px;
+           height: 20px;
+           color: white;
+           background-color: rgb(100, 100, 100);
+           /*绝对定位*/
+           font-weight: 900;
+           position: absolute;
+           top: 810px;
+           left: 10px;
+       }
+
+       /*头像样式*/
+       .tx {
+           width: 120px;
+           height: 115px;
+           /*dwb绝对定位头像*/
+           position: absolute;
+           top: 880px;
+           left: 10px;
+           /*四角圆角*/
+           border-top-left-radius: 90%;
+           border-top-right-radius: 90%;
+           border-bottom-right-radius: 90%;
+           border-bottom-left-radius: 90%;
+       }
+
+       .bbll {
+           /*dwb绝对定位头像下方文字*/
+           position: absolute;
+           top: 990px;
+           left: 45px;
+           font-weight: 900;
+           color: white;
+       }
+
+       .ppll {
+           /*dwb绝对定位头像下方文字*/
+           position: absolute;
+           top: 1015px;
+           left: 10px;
+           font-weight: 900;
+           color: white;
+       }
+
+       /*标识我的地盘*/
+       .bswddp {
+           width: 80px;
+           height: 20px;
+           color: white;
+           background-color: rgb(100, 100, 100);
+           /*绝对定位*/
+           font-weight: 900;
+           position: absolute;
+           top: 1300px;
+           left: 10px;
+       }
+
+       .biaoge {
+           /*dwb绝对定位表*/
+           position: absolute;
+           top: 1335px;
+           left: 0px;
+       }
+
+       /*表内div样式*/
+       .b1 {
+           color: white;
+           background-color: rgb(100, 100, 100);
+           width: 80px;
+           height: 40px;
+           text-align: center;
+           /*上内边距*/
+           padding-top: 13px;
+           /*四角圆角*/
+           border-radius: 20px 20px 20px 20px;
+       }
+
+       .bb1 {
+           /*表内div内文字超链接样式*/
+           text-decoration: none;
+           color: white;
+       }
+
+       /*标识给我钱钱*/
+       .bsgwqq {
+           width: 80px;
+           height: 20px;
+           color: white;
+           background-color: rgb(100, 100, 100);
+           /*绝对定位*/
+           font-weight: 900;
+           position: absolute;
+           top: 1700px;
+           left: 10px;
+       }
+
+       /*赏*/
+       .shang {
+           background-image: url(zsm.jpg);
+           background-size: 250px;
+           background-position: center;
+           padding: 10px 17px;
+           transition-duration: 0.5s;
+           background-color: white;
+           font-size: 200%;
+           /*四角圆角*/
+           border-radius: 100px 100px 100px 100px;
+           text-align: center;
+           /*绝对定位*/
+           position: absolute;
+           top: 1800px;
+           left: 165px;
+       }
+
+       .shang:hover {
+           padding: 100px 100px;
+           border-radius: 20px 20px 20px 20px;
+           top: 1750px;
+           left: 80px;
+           color: yellow;
+       }
+
+   }

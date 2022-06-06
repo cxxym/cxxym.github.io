@@ -1,0 +1,19 @@
+   /*桌面端*/
+   .A {
+       /*铺满屏幕*/
+       position: absolute;
+       top: 0;
+       bottom: 0;
+       left: 0;
+       right: 0;
+       /*样式*/
+       height: 500px;
+       width: 100%;
+       background-color: rgb(30, 30, 30);
+   }
+
+   .b {
+       background-color: red;
+       width: 200px;
+       height: 200px;
+   }
