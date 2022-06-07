@@ -211,4 +211,15 @@
            color: yellow;
        }
 
+       /*时间*/
+       .jssj {
+           width:393px;
+           font-weight: 500;
+           font-size: 30%;
+           color: white;
+           /*绝对定位*/
+           position: absolute;
+           top: 2060px;
+           text-align: center;
+       }
    }
