@@ -11,12 +11,11 @@
            /*样式*/
            width: 100%;
            height: 2100px;
-           background-color: rgb(24, 24, 24);
-
+           background-color: rgb(36, 41, 47);
        }
 
        .b {
-           background-color: pink;
+           background-color: rgba(0, 0, 0, 0);
            width: 100%;
            height: 730px;
            /*b父级定位点dwb*/
@@ -32,7 +31,7 @@
            /*dwb盒子决对定位yyapi*/
            width: 100%;
            height: 100px;
-           font-size: 16px;
+           
            position: absolute;
            top: 300px;
            left: 0px;
@@ -42,7 +41,25 @@
            /*一言API文本*/
            text-align: center;
            font-weight: bolder;
-           color: black;
+           color: white;
+           font-size: 16px;
+           animation-name: yyapitxt;
+           animation-duration: 4s;
+           animation-iteration-count: infinite;
+           animation-iteration-count: 1;
+
+       }
+
+       @keyframes yyapitxt {
+           0% {
+               font-size: 14px;
+               color: rgb(36, 41, 47);
+           }
+
+           100% {
+               font-size: 16px;
+               color: white;
+           }
        }
 
        .wbhz {
@@ -55,12 +72,14 @@
            left: 0px;
        }
 
+
+
        .xia {
            /*wbhz内文字*/
            position: relative;
            /*id name*/
            animation-name: example;
-           animation-duration: 4s;
+           animation-duration: 3.5s;
            animation-iteration-count: infinite;
            font-weight: 900;
 
@@ -69,19 +88,19 @@
        /*上下动画*/
        @keyframes example {
            0% {
-               color: white;
+               color: rgb(36, 41, 47);
                left: 0px;
                top: 0px;
            }
 
            50% {
-               color: black;
+               color: white;
                left: 0px;
-               top: 20px;
+               top: 30px;
            }
 
            100% {
-               color: white;
+               color: rgb(36, 41, 47);
                left: 0px;
                top: 0px;
            }
@@ -92,7 +111,7 @@
            width: 80px;
            height: 20px;
            color: white;
-           background-color: rgb(100, 100, 100);
+           background-color: rgb(82, 90, 99);
            /*绝对定位*/
            font-weight: 900;
            position: absolute;
@@ -138,7 +157,7 @@
            width: 80px;
            height: 20px;
            color: white;
-           background-color: rgb(100, 100, 100);
+           background-color: rgb(82, 90, 99);
            /*绝对定位*/
            font-weight: 900;
            position: absolute;
@@ -156,14 +175,23 @@
        /*表内div样式*/
        .b1 {
            color: white;
-           background-color: rgb(100, 100, 100);
+           background-color: rgb(82, 90, 99);
            width: 80px;
            height: 40px;
            text-align: center;
            /*上内边距*/
            padding-top: 13px;
            /*四角圆角*/
-           border-radius: 20px 20px 20px 20px;
+           border-radius: 15px 15px 15px 15px;
+           transition-duration: 0.5s;
+       }
+
+       .b1:hover {
+           background-color: rgb(100, 90, 99);
+           width: 90px;
+           height: 50px;
+           /*上内边距*/
+           padding-top: 23px;
        }
 
        .bb1 {
@@ -177,7 +205,7 @@
            width: 80px;
            height: 20px;
            color: white;
-           background-color: rgb(100, 100, 100);
+           background-color: rgb(82, 90, 99);
            /*绝对定位*/
            font-weight: 900;
            position: absolute;
@@ -213,7 +241,7 @@
 
        /*时间*/
        .jssj {
-           width:393px;
+           width: 393px;
            font-weight: 500;
            font-size: 55%;
            color: white;
@@ -222,8 +250,9 @@
            top: 2060px;
            text-align: center;
        }
-       .db{
-           width:393px;
+
+       .db {
+           width: 393px;
            font-weight: 500;
            font-size: 45%;
            color: white;
