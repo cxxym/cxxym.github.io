@@ -13,6 +13,6 @@ function show_runtime() {
     C = Math.floor((b - B) * 60);
     D = Math.floor((c - C) * 60);
 
-    runtime_span.innerHTML = "本站已正常运行" + A + "天" + B + "小时" + C + "分" + D + "秒"
+    runtime_span.innerHTML = "本页已正常运行" + A + "天" + B + "小时" + C + "分" + D + "秒"
 }
 show_runtime();
