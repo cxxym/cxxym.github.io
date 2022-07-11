@@ -152,7 +152,11 @@
        .pd{
            background-color: white;
            margin-left: 30px;
-           margin-top: 20px;
+       }
+       .xhx{
+           /*去掉下划线*/
+           text-decoration: none;
+           color: black;
        }
        #gf {
            background-color: grey;
@@ -187,7 +191,7 @@
        }
 
        .gf2 {
-           width: 50%;
+           width: 30%;
            animation-name: g2;
            animation-duration: 4s;
            animation-iteration-count: infinite;
@@ -200,7 +204,7 @@
            }
 
            100% {
-               width: 50%;
+               width: 30%;
            }
        }
 
