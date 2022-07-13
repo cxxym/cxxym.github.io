@@ -142,22 +142,27 @@
            margin-top: 30px;
            margin-left: 10px;
        }
-       .wdpd{
+
+       .wdpd {
            color: mediumspringgreen;
        }
-       .bz{
+
+       .bz {
            color: paleturquoise;
            margin-right: 230px;
        }
-       .pd{
+
+       .pd {
            background-color: white;
            margin-left: 30px;
        }
-       .xhx{
+
+       .xhx {
            /*去掉下划线*/
            text-decoration: none;
            color: black;
        }
+
        #gf {
            background-color: grey;
            border-radius: 100px 100px 100px 100px;
@@ -279,6 +284,72 @@
                width: 60%;
            }
        }
+
+       #h {
+           margin-top: 20px;
+       }
+
+       .h1 {
+           color: rgba(0, 0, 0, 0);
+           transition-duration: 0.7s;
+       }
+
+       .h2 {
+           color: rgba(0, 0, 0, 0);
+           transition-duration: 0.7s;
+       }
+
+       .h3 {
+           color: rgba(0, 0, 0, 0);
+           transition-duration: 0.7s;
+       }
+
+       .h4 {
+           color: rgba(0, 0, 0, 0);
+           transition-duration: 0.7s;
+       }
+
+       .h5 {
+           color: rgba(0, 0, 0, 0);
+           transition-duration: 0.7s;
+       }
+
+       .h6 {
+           color: rgba(0, 0, 0, 0);
+           transition-duration: 0.7s;
+       }
+
+       .dh1:hover .h1 {
+
+           color: rgb(203,101,100);
+       }
+
+       .dh2:hover .h2 {
+
+           color: rgb(219,119,91);
+       }
+
+       .dh3:hover .h3 {
+
+           color: rgb(223,166,110);
+       }
+
+       .dh4:hover .h4 {
+
+           color: rgb(161,181,104);
+       }
+
+       .dh5:hover .h5 {
+
+           color: rgb(155,197,192);
+       }
+
+       .dh6:hover .h6 {
+
+           color: rgb(116,121,185);
+       }
+
+
 
        .bzhi {
            margin-bottom: 0px;
