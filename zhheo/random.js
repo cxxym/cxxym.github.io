@@ -1,0 +1,1 @@
+var posts=["2022/09/22/使用termux安装hexo并上传github/","2022/09/28/储存目录清理脚本/"];function toRandomPost(){pjax.loadUrl('/'+posts[Math.floor(Math.random() * posts.length)]);};
