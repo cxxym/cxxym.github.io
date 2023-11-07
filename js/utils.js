@@ -1,245 +1,174 @@
-/* global Fluid, CONFIG */
-
-window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame;
-
-Fluid.utils = {
-
-  listenScroll: function(callback) {
-    var dbc = new Debouncer(callback);
-    window.addEventListener('scroll', dbc, false);
-    dbc.handleEvent();
-    return dbc;
-  },
-
-  unlistenScroll: function(callback) {
-    window.removeEventListener('scroll', callback);
-  },
-
-  listenDOMLoaded(callback) {
-    if (document.readyState !== 'loading') {
-      callback();
-    } else {
-      document.addEventListener('DOMContentLoaded', function () {
-        callback();
-      });
-    }
-  },
-
-  scrollToElement: function(target, offset) {
-    var of = jQuery(target).offset();
-    if (of) {
-      jQuery('html,body').animate({
-        scrollTop: of.top + (offset || 0),
-        easing   : 'swing'
-      });
-    }
-  },
-
-  elementVisible: function(element, offsetFactor) {
-    offsetFactor = offsetFactor && offsetFactor >= 0 ? offsetFactor : 0;
-    var rect = element.getBoundingClientRect();
-    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    return (
-      (rect.top >= 0 && rect.top <= viewportHeight * (1 + offsetFactor) + rect.height / 2) ||
-      (rect.bottom >= 0 && rect.bottom <= viewportHeight * (1 + offsetFactor) + rect.height / 2)
-    );
-  },
-
-  waitElementVisible: function(selectorOrElement, callback, offsetFactor) {
-    var runningOnBrowser = typeof window !== 'undefined';
-    var isBot = (runningOnBrowser && !('onscroll' in window))
-      || (typeof navigator !== 'undefined' && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent));
-    if (!runningOnBrowser || isBot) {
-      return;
-    }
-
-    offsetFactor = offsetFactor && offsetFactor >= 0 ? offsetFactor : 0;
-
-    function waitInViewport(element) {
-      Fluid.utils.listenDOMLoaded(function() {
-        if (Fluid.utils.elementVisible(element, offsetFactor)) {
-          callback();
-          return;
-        }
-        if ('IntersectionObserver' in window) {
-          var io = new IntersectionObserver(function(entries, ob) {
-            if (entries[0].isIntersecting) {
-              callback();
-              ob.disconnect();
-            }
-          }, {
-            threshold : [0],
-            rootMargin: (window.innerHeight || document.documentElement.clientHeight) * offsetFactor + 'px'
-          });
-          io.observe(element);
-        } else {
-          var wrapper = Fluid.utils.listenScroll(function() {
-            if (Fluid.utils.elementVisible(element, offsetFactor)) {
-              Fluid.utils.unlistenScroll(wrapper);
-              callback();
-            }
-          });
-        }
-      });
-    }
-
-    if (typeof selectorOrElement === 'string') {
-      this.waitElementLoaded(selectorOrElement, function(element) {
-        waitInViewport(element);
-      });
-    } else {
-      waitInViewport(selectorOrElement);
-    }
-  },
-
-  waitElementLoaded: function(selector, callback) {
-    var runningOnBrowser = typeof window !== 'undefined';
-    var isBot = (runningOnBrowser && !('onscroll' in window))
-      || (typeof navigator !== 'undefined' && /(gle|ing|ro|msn)bot|crawl|spider|yand|duckgo/i.test(navigator.userAgent));
-    if (!runningOnBrowser || isBot) {
-      return;
-    }
-
-    if ('MutationObserver' in window) {
-      var mo = new MutationObserver(function(records, ob) {
-        var ele = document.querySelector(selector);
-        if (ele) {
-          callback(ele);
-          ob.disconnect();
-        }
-      });
-      mo.observe(document, { childList: true, subtree: true });
-    } else {
-      Fluid.utils.listenDOMLoaded(function() {
-        var waitLoop = function() {
-          var ele = document.querySelector(selector);
-          if (ele) {
-            callback(ele);
-          } else {
-            setTimeout(waitLoop, 100);
+var acy = {
+  debounce: function(e, t, n) {
+      let o;
+      return function() {
+          const i = this
+            , s = arguments
+            , r = n && !o;
+          clearTimeout(o),
+          o = setTimeout((function() {
+              o = null,
+              n || e.apply(i, s)
           }
-        };
-        waitLoop();
-      });
-    }
-  },
-
-  createScript: function(url, onload) {
-    var s = document.createElement('script');
-    s.setAttribute('src', url);
-    s.setAttribute('type', 'text/javascript');
-    s.setAttribute('charset', 'UTF-8');
-    s.async = false;
-    if (typeof onload === 'function') {
-      if (window.attachEvent) {
-        s.onreadystatechange = function() {
-          var e = s.readyState;
-          if (e === 'loaded' || e === 'complete') {
-            s.onreadystatechange = null;
-            onload();
-          }
-        };
-      } else {
-        s.onload = onload;
+          ), t),
+          r && e.apply(i, s)
       }
-    }
-    var ss = document.getElementsByTagName('script');
-    var e = ss.length > 0 ? ss[ss.length - 1] : document.head || document.documentElement;
-    e.parentNode.insertBefore(s, e.nextSibling);
   },
-
-  createCssLink: function(url) {
-    var l = document.createElement('link');
-    l.setAttribute('rel', 'stylesheet');
-    l.setAttribute('type', 'text/css');
-    l.setAttribute('href', url);
-    var e = document.getElementsByTagName('link')[0]
-      || document.getElementsByTagName('head')[0]
-      || document.head || document.documentElement;
-    e.parentNode.insertBefore(l, e);
-  },
-
-  loadComments: function(selector, loadFunc) {
-    var ele = document.querySelector('#comments[lazyload]');
-    if (ele) {
-      var callback = function() {
-        loadFunc();
-        ele.removeAttribute('lazyload');
+  throttle: function(e, t, n) {
+      let o, i, s, r = 0;
+      n || (n = {});
+      const a = function() {
+          r = !1 === n.leading ? 0 : (new Date).getTime(),
+          o = null,
+          e.apply(i, s),
+          o || (i = s = null)
       };
-      Fluid.utils.waitElementVisible(selector, callback, CONFIG.lazyload.offset_factor);
-    } else {
-      loadFunc();
-    }
-  },
-
-  getBackgroundLightness(selectorOrElement) {
-    var ele = selectorOrElement;
-    if (typeof selectorOrElement === 'string') {
-      ele = document.querySelector(selectorOrElement);
-    }
-    var view = ele.ownerDocument.defaultView;
-    if (!view) {
-      view = window;
-    }
-    var rgbArr = view.getComputedStyle(ele).backgroundColor.replace(/rgba*\(/, '').replace(')', '').split(/,\s*/);
-    if (rgbArr.length < 3) {
-      return 0;
-    }
-    var colorCast = (0.213 * rgbArr[0]) + (0.715 * rgbArr[1]) + (0.072 * rgbArr[2]);
-    return colorCast === 0 || colorCast > 255 / 2 ? 1 : -1;
-  },
-
-  retry(handler, interval, times) {
-    if (times <= 0) {
-      return;
-    }
-    var next = function() {
-      if (--times >= 0 && !handler()) {
-        setTimeout(next, interval);
+      return function() {
+          const l = (new Date).getTime();
+          r || !1 !== n.leading || (r = l);
+          const d = t - (l - r);
+          i = this,
+          s = arguments,
+          d <= 0 || d > t ? (o && (clearTimeout(o),
+          o = null),
+          r = l,
+          e.apply(i, s),
+          o || (i = s = null)) : o || !1 === n.trailing || (o = setTimeout(a, d))
       }
-    };
-    setTimeout(next, interval);
+  },
+  sidebarPaddingR: ()=>{
+      const e = window.innerWidth
+        , t = document.body.clientWidth;
+      e !== t && (document.body.style.paddingRight = e - t + "px")
   }
-
-};
-
-/**
- * Handles debouncing of events via requestAnimationFrame
- * @see http://www.html5rocks.com/en/tutorials/speed/animations/
- * @param {Function} callback The callback to handle whichever event
- */
-function Debouncer(callback) {
-  this.callback = callback;
-  this.ticking = false;
-}
-
-Debouncer.prototype = {
-  constructor: Debouncer,
-
-  /**
-   * dispatches the event to the supplied callback
-   * @private
-   */
-  update: function() {
-    this.callback && this.callback();
-    this.ticking = false;
+  ,
+  snackbarShow: (e,t,n)=>{
+      const o = void 0 !== t && t
+        , i = void 0 !== n ? n : 5e3
+        , s = GLOBAL_CONFIG.Snackbar.position
+        , r = "light" === document.documentElement.getAttribute("data-theme") ? GLOBAL_CONFIG.Snackbar.bgLight : GLOBAL_CONFIG.Snackbar.bgDark;
+      document.styleSheets[0].addRule(":root", "--heo-snackbar-time:" + i + "ms!important"),
+      Snackbar.show({
+          text: e,
+          backgroundColor: r,
+          showAction: o,
+          duration: i,
+          pos: s
+      })
+  }
+  ,
+  initJustifiedGallery: function(e) {
+      e instanceof jQuery || (e = $(e)),
+      e.each((function(e, t) {
+          $(this).is(":visible") && $(this).justifiedGallery({
+              rowHeight: 220,
+              margins: 4
+          })
+      }
+      ))
   },
-
-  /**
-   * ensures events don't get stacked
-   * @private
-   */
-  requestTick: function() {
-    if (!this.ticking) {
-      requestAnimationFrame(this.rafCallback || (this.rafCallback = this.update.bind(this)));
-      this.ticking = true;
-    }
+  diffDate: (e,t=!1)=>{
+      const n = new Date
+        , o = new Date(e)
+        , i = n.getTime() - o.getTime()
+        , s = 36e5
+        , r = 24 * s;
+      let a;
+      if (t) {
+          const e = i / r
+            , t = i / s
+            , n = i / 6e4;
+          a = i / 2592e6 > 12 ? o.toLocaleDateString() : e >= 7 ? o.toLocaleDateString().substr(5) : e >= 1 ? parseInt(e) + "" + GLOBAL_CONFIG.date_suffix.day : t >= 1 || n >= 1 ? "最近" : GLOBAL_CONFIG.date_suffix.just
+      } else
+          a = parseInt(i / r);
+      return a
+  }
+  ,
+  loadComment: (e,t)=>{
+      if ("IntersectionObserver"in window) {
+          const n = new IntersectionObserver((e=>{
+              e[0].isIntersecting && (t(),
+              n.disconnect())
+          }
+          ),{
+              threshold: [0]
+          });
+          n.observe(e)
+      } else
+          t()
+  }
+  ,
+  scrollToDest: (e,t)=>{
+      if (e < 0 || t < 0)
+          return;
+      const n = window.scrollY || window.screenTop;
+      if (e -= 70,
+      "CSS"in window && CSS.supports("scroll-behavior", "smooth"))
+          return void window.scrollTo({
+              top: e,
+              behavior: "smooth"
+          });
+      let o = null;
+      t = t || 500,
+      window.requestAnimationFrame((function i(s) {
+          if (o = o || s,
+          n < e) {
+              const r = s - o;
+              window.scrollTo(0, (e - n) * r / t + n),
+              r < t ? window.requestAnimationFrame(i) : window.scrollTo(0, e)
+          } else {
+              const r = s - o;
+              window.scrollTo(0, n - (n - e) * r / t),
+              r < t ? window.requestAnimationFrame(i) : window.scrollTo(0, e)
+          }
+      }
+      ))
+  }
+  ,
+  fadeIn: (e,t)=>{
+      e.style.cssText = `display:block;animation: to_show ${t}s`
+  }
+  ,
+  fadeOut: (e,t)=>{
+      e.addEventListener("animationend", (function t() {
+          e.style.cssText = "display: none; animation: '' ",
+          e.removeEventListener("animationend", t)
+      }
+      )),
+      e.style.animation = `to_hide ${t}s`
+  }
+  ,
+  getParents: (e,t)=>{
+      for (; e && e !== document; e = e.parentNode)
+          if (e.matches(t))
+              return e;
+      return null
+  }
+  ,
+  siblings: (e,t)=>[...e.parentNode.children].filter((n=>t ? n !== e && n.matches(t) : n !== e)),
+  wrap: function(e, t, n="", o="") {
+      const i = document.createElement(t);
+      n && (i.id = n),
+      o && (i.className = o),
+      e.parentNode.insertBefore(i, e),
+      i.appendChild(e)
   },
-
-  /**
-   * Attach this as the event listeners
-   */
-  handleEvent: function() {
-    this.requestTick();
+  unwrap: function(e) {
+      const t = e.parentNode;
+      t !== document.body && (t.parentNode.insertBefore(e, t),
+      t.parentNode.removeChild(t))
+  },
+  isJqueryLoad: e=>{
+      "undefined" == typeof jQuery ? getScript(GLOBAL_CONFIG.source.jQuery).then(e) : e()
+  }
+  ,
+  isHidden: e=>0 === e.offsetHeight && 0 === e.offsetWidth,
+  getEleTop: e=>{
+      let t = e.offsetTop
+        , n = e.offsetParent;
+      for (; null !== n; )
+          t += n.offsetTop,
+          n = n.offsetParent;
+      return t
   }
 };
