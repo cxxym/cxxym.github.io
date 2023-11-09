@@ -1,690 +1,595 @@
-
-
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=auto>
-
-
-
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="麻批">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="因为长时间饱受垃圾文件折磨，又不想过多耗电，于是我便乱写了“垃圾文件清理脚本”它具有以下功能：1.清理储存目录（保持干净整洁。2.白名单功能（脚本不会删除白名单内文件。3.日志记录。它的缺点:1.脚本内没有添加识别脚本自身、配置文件及日志功能，所以需在配置文件添加。 声明：使用本脚本造成任何“财产损失”及“文件丢失”与“作者”无关。脚本及其配置文件只能放置在储存目录，不能放置在其他目录，否则你的储">
-<meta property="og:type" content="article">
-<meta property="og:title" content="储存目录清理脚本分享">
-<meta property="og:url" content="http://example.com/2022/09/28/%E5%82%A8%E5%AD%98%E7%9B%AE%E5%BD%95%E6%B8%85%E7%90%86%E8%84%9A%E6%9C%AC/index.html">
-<meta property="og:site_name" content="panxiao">
-<meta property="og:description" content="因为长时间饱受垃圾文件折磨，又不想过多耗电，于是我便乱写了“垃圾文件清理脚本”它具有以下功能：1.清理储存目录（保持干净整洁。2.白名单功能（脚本不会删除白名单内文件。3.日志记录。它的缺点:1.脚本内没有添加识别脚本自身、配置文件及日志功能，所以需在配置文件添加。 声明：使用本脚本造成任何“财产损失”及“文件丢失”与“作者”无关。脚本及其配置文件只能放置在储存目录，不能放置在其他目录，否则你的储">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://shp.qpic.cn/collector/3216627800/4950549c-4337-4cc1-b33c-5a685391fac5/0">
-<meta property="article:published_time" content="2022-09-28T11:20:37.000Z">
-<meta property="article:modified_time" content="2023-11-07T17:03:58.253Z">
-<meta property="article:author" content="麻批">
-<meta property="article:tag" content="shell">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://shp.qpic.cn/collector/3216627800/4950549c-4337-4cc1-b33c-5a685391fac5/0">
-  
-  
-    <meta name="referrer" content="no-referrer-when-downgrade">
-  
-  
-  <title>储存目录清理脚本分享 - panxiao</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="Pxiao">
+    
+    <title>
+        
+            储存目录清理脚本分享 |
+        
+        讲点啥子
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
-
-
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
-  
-
-
-
-
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.5","typing":{"enable":true,"typeSpeed":120,"cursorChar":"_","loop":true,"scope":["home"]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":"f29d0c06b2cdcebf55f4e3cf28259be9","google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
+    
+        <link rel="shortcut icon" href="https://cdn.jsdelivr.net/gh/cxxym/tpc/lg.svg#/images/logo.svg">
+    
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/font/css/fontawesome.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/font/css/regular.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/font/css/solid.min.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/font/css/brands.min.css">
+    
+    <script class="keep-theme-configurations">
+    const KEEP = window.KEEP || {}
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":"zh-CN","path":"search.json"}
+    KEEP.theme_config = {"toc":{"enable":true,"number":false,"expand_all":false,"init_open":true,"layout":"right"},"style":{"primary_color":"#dcdde1","logo":"https://cdn.jsdelivr.net/gh/cxxym/tpc/ok.svg#/images/ok.svg","favicon":"https://cdn.jsdelivr.net/gh/cxxym/tpc/lg.svg#/images/logo.svg","avatar":"https://cdn.jsdelivr.net/gh/cxxym/tpc/lg_1.svg","first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"Keep writing and Keep loving.","hitokoto":true},"scroll":{"progress_bar":false,"percent":false}},"local_search":{"enable":true,"preload":true},"code_block":{"tools":{"enable":true,"style":"default"},"highlight_theme":"default"},"pjax":{"enable":true},"lazyload":{"enable":true},"comment":{"enable":false,"use":"valine","valine":{"appid":null,"appkey":null,"server_urls":null,"placeholder":null},"gitalk":{"github_id":null,"github_admins":null,"repository":null,"client_id":null,"client_secret":null,"proxy":null},"twikoo":{"env_id":null,"region":null,"version":"1.6.21"},"waline":{"server_url":null,"reaction":false,"version":2},"giscus":{"repo":null,"repo_id":null,"category":"Announcements","category_id":null,"reactions_enabled":false}},"post":{"author_label":{"enable":true,"auto":true,"custom_label_list":["Trainee","Engineer","Architect"]},"word_count":{"wordcount":true,"min2read":true},"datetime_format":"YYYY-MM-DD HH:mm:ss","copyright_info":false,"share":false,"reward":{"enable":false,"img_link":null,"text":null}},"website_count":{"busuanzi_count":{"enable":true,"site_uv":true,"site_pv":true,"page_pv":true}},"version":"3.8.6"}
+    KEEP.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"}
+    KEEP.language_code_block = {"copy":"复制代码","copied":"已复制","fold":"折叠代码块","folded":"已折叠"}
+    KEEP.language_copy_copyright = {"copy":"复制版权信息","copied":"已复制","title":"原文标题","author":"原文作者","link":"原文链接"}
   </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
-
-  
-    <!-- Baidu Analytics -->
-    <script async>
-      if (!Fluid.ctx.dnt) {
-        var _hmt = _hmt || [];
-        (function() {
-          var hm = document.createElement("script");
-          hm.src = "https://hm.baidu.com/hm.js?f29d0c06b2cdcebf55f4e3cf28259be9";
-          var s = document.getElementsByTagName("script")[0];
-          s.parentNode.insertBefore(hm, s);
-        })();
-      }
-    </script>
-  
-
-  
-    <!-- Google tag (gtag.js) -->
-    <script async>
-      if (!Fluid.ctx.dnt) {
-        Fluid.utils.createScript("https://www.googletagmanager.com/gtag/js?id=", function() {
-          window.dataLayer = window.dataLayer || [];
-          function gtag() {
-            dataLayer.push(arguments);
-          }
-          gtag('js', new Date());
-          gtag('config', '');
-        });
-      }
-    </script>
-  
-
-  
-
-  
-
-  
-
-  
-
-
-
-  
 <meta name="generator" content="Hexo 7.0.0"></head>
 
 
 <body>
-  
-
-  <header>
-    
-
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>讲点哪样</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                <span>首页</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>归档</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                <span>分类</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>标签</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                <span>关于</span>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-</nav>
-
-  
-
-<div id="banner" class="banner" parallax=true
-     style="background: url('https://shp.qpic.cn/collector/3216627800/4950549c-4337-4cc1-b33c-5a685391fac5/0') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle">储存目录清理脚本分享</span>
-          
-        </div>
-
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-09-28 19:20" pubdate>
-          2022年9月28日 晚上
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          1.8k 字
-        
-      </span>
+<div class="progress-bar-container">
     
 
     
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          16 分钟
-        
-      </span>
+        <span class="pjax-progress-bar"></span>
+        <i class="pjax-progress-icon fas fa-circle-notch fa-spin"></i>
     
-
-    
-    
-  </div>
-
-
-        
-      </div>
-
-      
-    </div>
-  </div>
-</div>
-
-</div>
-
-  </header>
-
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <h1 id="seo-header">储存目录清理脚本分享</h1>
-            
-            
-              <div class="markdown-body">
-                
-                <p>因为长时间饱受垃圾文件折磨，又不想过多耗电，于是我便乱写了“垃圾文件清理脚本”它具有以下功能：<br>1.清理储存目录（保持干净整洁。<br>2.白名单功能（脚本不会删除白名单内文件。<br>3.日志记录。<br>它的缺点:<br>1.脚本内没有添加识别脚本自身、配置文件及日志功能，所以需在配置文件添加。<br><img src="https://shp.qpic.cn/collector/3216627800/98a608ed-bab8-4303-abfd-6f808c6ec4dc/0" srcset="/img/loading.gif" lazyload></p>
-<h1 id="声明：使用本脚本造成任何“财产损失”及“文件丢失”与“作者”无关。"><a href="#声明：使用本脚本造成任何“财产损失”及“文件丢失”与“作者”无关。" class="headerlink" title="声明：使用本脚本造成任何“财产损失”及“文件丢失”与“作者”无关。"></a>声明：使用本脚本造成任何“财产损失”及“文件丢失”与“作者”无关。</h1><h2 id="脚本及其配置文件只能放置在储存目录，不能放置在其他目录，否则你的储存目录内“-storage-emulated-0-”所有文件可能被删除。"><a href="#脚本及其配置文件只能放置在储存目录，不能放置在其他目录，否则你的储存目录内“-storage-emulated-0-”所有文件可能被删除。" class="headerlink" title="脚本及其配置文件只能放置在储存目录，不能放置在其他目录，否则你的储存目录内“&#x2F;storage&#x2F;emulated&#x2F;0&#x2F;”所有文件可能被删除。"></a>脚本及其配置文件只能放置在储存目录，不能放置在其他目录，否则你的储存目录内“&#x2F;storage&#x2F;emulated&#x2F;0&#x2F;”所有文件可能被删除。</h2><h2 id="使用教程如下"><a href="#使用教程如下" class="headerlink" title="使用教程如下"></a>使用教程如下</h2><h3 id="首先复制下面源码"><a href="#首先复制下面源码" class="headerlink" title="首先复制下面源码"></a>首先复制下面源码</h3><figure class="highlight bash"><table><tr><td class="gutter"><figure><div class="code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></div></figure></td><td class="code"><figure><div class="code-wrapper"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#作者 panxiao</span></span><br><span class="line"><span class="comment"># 判断是否root执行</span></span><br><span class="line"><span class="keyword">if</span> [ `<span class="built_in">id</span> -u` -ne 0 ];<span class="keyword">then</span></span><br><span class="line"><span class="comment"># 开始计时</span></span><br><span class="line">start_time=$(<span class="built_in">date</span> +%s.%N)</span><br><span class="line"><span class="comment"># 创建一个文件来储存白名单中的文件名</span></span><br><span class="line"><span class="built_in">touch</span> whitelist.txt</span><br><span class="line"><span class="comment"># 获取白名单列表的行数及所有文件数量</span></span><br><span class="line">white_lines=$(<span class="built_in">cat</span> whitelist.txt | <span class="built_in">wc</span> -l)</span><br><span class="line">all_files=$(<span class="built_in">ls</span> -A /storage/emulated/0 | <span class="built_in">wc</span> -l)</span><br><span class="line"><span class="comment"># 设置删除计数和删除记录文件路径</span></span><br><span class="line">deleted=0</span><br><span class="line">log_path=<span class="string">&quot;/sdcard/deleted_files.log&quot;</span></span><br><span class="line"><span class="comment"># 定义并发线程数</span></span><br><span class="line">thread_num=10</span><br><span class="line"><span class="comment"># 在日志文件中写入当前时间和操作说明</span></span><br><span class="line"><span class="comment">#echo &quot;$(date &#x27;+%Y-%m-%d %H:%M:%S&#x27;) - 删除非白名单文件&quot; &gt;&gt; $log_path</span></span><br><span class="line"><span class="comment"># 遍历所有文件并删除非白名单文件</span></span><br><span class="line"><span class="keyword">for</span> file_name <span class="keyword">in</span> $(<span class="built_in">ls</span> -a /storage/emulated/0); <span class="keyword">do</span></span><br><span class="line">  <span class="comment"># 如果文件不在白名单中，则删除</span></span><br><span class="line">  <span class="keyword">if</span> ! grep -q <span class="string">&quot;<span class="variable">$file_name</span>&quot;</span> whitelist.txt; <span class="keyword">then</span></span><br><span class="line">    ((deleted++))</span><br><span class="line"><span class="comment"># 在新线程中删除文件</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">rm</span> -rf <span class="string">&quot;/storage/emulated/0/<span class="variable">$file_name</span>&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$deleted</span>=&gt;删除<span class="variable">$file_name</span>&quot;</span></span><br><span class="line">    <span class="comment">#echo &quot;$(date &#x27;+%Y-%m-%d %H:%M:%S&#x27;) - 删除文件：$file_name&quot; &gt;&gt; $log_path</span></span><br><span class="line">  &#125; &amp;</span><br><span class="line">  <span class="comment"># 控制并发线程数量</span></span><br><span class="line"> <span class="comment">#while [ $(jobs | wc -l) -ge $thread_num ]; do</span></span><br><span class="line">  <span class="comment">#   sleep 1</span></span><br><span class="line"><span class="comment">#   done</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment"># 等待所有线程结束</span></span><br><span class="line"><span class="built_in">wait</span></span><br><span class="line"><span class="comment"># 停止计时</span></span><br><span class="line">end_time=$(<span class="built_in">date</span> +%s.%N)</span><br><span class="line">elapsed=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$end_time</span> - <span class="variable">$start_time</span>&quot;</span> | bc)</span><br><span class="line"><span class="comment"># 格式化时间，确保输出3位数</span></span><br><span class="line">formatted_time=$(<span class="built_in">printf</span> <span class="string">&quot;%.3f&quot;</span> <span class="variable">$elapsed</span>)</span><br><span class="line"><span class="comment"># 输出删除统计信息和完成提示</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;删除完成！共删除了 <span class="variable">$deleted</span> 个文件用时<span class="variable">$formatted_time</span>秒（不包括白名单中的文件）&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;详细记录请查看：<span class="variable">$log_path</span>&quot;</span></span><br><span class="line"><span class="comment"># 如果为root执行则提示并退出脚本</span></span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">    i=0</span><br><span class="line">    <span class="keyword">while</span> ((i&lt;=<span class="number">20</span>)) <span class="keyword">do</span></span><br><span class="line">      ((i++))</span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;禁止使用root运行-此操作可能使设备变砖!&quot;</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></div></figure></td></tr></table></figure>
-
-<h3 id="使用mt管理器在储存目录“-storage-emulated-0-”随便创建一个后缀为sh的文件"><a href="#使用mt管理器在储存目录“-storage-emulated-0-”随便创建一个后缀为sh的文件" class="headerlink" title="使用mt管理器在储存目录“&#x2F;storage&#x2F;emulated&#x2F;0&#x2F;”随便创建一个后缀为sh的文件"></a>使用mt管理器在储存目录“&#x2F;storage&#x2F;emulated&#x2F;0&#x2F;”随便创建一个后缀为sh的文件</h3><h3 id="粘贴复制的代码到创建的文件并保存"><a href="#粘贴复制的代码到创建的文件并保存" class="headerlink" title="粘贴复制的代码到创建的文件并保存"></a>粘贴复制的代码到创建的文件并保存</h3><h3 id="执行该文件"><a href="#执行该文件" class="headerlink" title="执行该文件"></a>执行该文件</h3><p>第一次执行该文件，它会生成“whitelist.txt”文件，然后必须添加重要文件的“文件名”一行一个不得有空格否则配置文件白名单失效，你的文件会被删除，注意添加脚本和白名单文件的文件名。<br><img src="https://shp.qpic.cn/collector/3216627800/98a608ed-bab8-4303-abfd-6f808c6ec4dc/0" srcset="/img/loading.gif" lazyload></p>
-<h3 id="配置文件配置完成之后，你就可以执行你创建的清理文件了。"><a href="#配置文件配置完成之后，你就可以执行你创建的清理文件了。" class="headerlink" title="配置文件配置完成之后，你就可以执行你创建的清理文件了。"></a>配置文件配置完成之后，你就可以执行你创建的清理文件了。</h3><h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><h3 id="1-如果你有重要文件请不要使用此脚本"><a href="#1-如果你有重要文件请不要使用此脚本" class="headerlink" title="1.如果你有重要文件请不要使用此脚本"></a>1.如果你有重要文件请不要使用此脚本</h3><h3 id="2-请不要使用root执行脚本可能删除你的根目录文件"><a href="#2-请不要使用root执行脚本可能删除你的根目录文件" class="headerlink" title="2.请不要使用root执行脚本可能删除你的根目录文件"></a>2.请不要使用root执行脚本可能删除你的根目录文件</h3><h3 id="3-可能存在未知bug，作者能力有限暂未发现"><a href="#3-可能存在未知bug，作者能力有限暂未发现" class="headerlink" title="3.可能存在未知bug，作者能力有限暂未发现"></a>3.可能存在未知bug，作者能力有限暂未发现</h3><h3 id="4-使用本脚本造成任何财产损失及文件丢失作者无关"><a href="#4-使用本脚本造成任何财产损失及文件丢失作者无关" class="headerlink" title="4.使用本脚本造成任何财产损失及文件丢失作者无关"></a>4.使用本脚本造成任何财产损失及文件丢失作者无关</h3>
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/shell/" class="print-no-link">#shell</a>
-      
-    </div>
-  
 </div>
 
 
-              
-  
+<main class="page-container border-box">
 
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>储存目录清理脚本分享</div>
-      <div>http://example.com/2022/09/28/储存目录清理脚本/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>作者</div>
-          <div>麻批</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>发布于</div>
-          <div>2022年9月28日</div>
-        </div>
-      
-      
-      
-        <div class="license-meta-item">
-          <div>许可协议</div>
-          <div>
+    <!-- home first screen  -->
+    
+
+    <!-- page content -->
+    <div class="page-main-content border-box">
+        <div class="page-main-content-top">
             
-              
-              
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
-                    <i class="iconfont icon-by"></i>
-                  </span>
+<header class="header-wrapper">
+
+    <div class="border-box header-content">
+        <div class="left border-box">
+            
+                <a class="logo-image border-box" href="/">
+                    <img src="https://cdn.jsdelivr.net/gh/cxxym/tpc/ok.svg#/images/ok.svg">
                 </a>
-              
             
-          </div>
+            <a class="site-name border-box" href="/">
+               讲点啥子
+            </a>
         </div>
-      
-    </div>
-    <div class="license-icon iconfont"></div>
-  </div>
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
+        <div class="right border-box">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                首页
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                归档
+                            </a>
+                        </li>
                     
                     
-                      <a href="/2023/11/06/%E8%B0%B7%E6%AD%8C%E7%9B%B8%E6%9C%BA%E6%8B%8D%E6%91%84/" title="谷歌相机拍摄">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">谷歌相机拍摄</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
                     
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2022/09/22/%E4%BD%BF%E7%94%A8termux%E5%AE%89%E8%A3%85hexo%E5%B9%B6%E4%B8%8A%E4%BC%A0github/" title="使用Termux安装hexo博客框架并部署到Github">
-                        <span class="hidden-mobile">使用Termux安装hexo博客框架并部署到Github</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
                 </div>
-              
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">首页</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">归档</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle border-box">
+
+            <div class="main-content border-box">
+
+                
+
+                    <div class="fade-in-down-animation">
+    <div class="post-page-container border-box">
+
+        <div class="article-content-container border-box">
+
+            
+
+            <div class="article-content-bottom border-box">
+                
+                    <div class="article-title">
+                        储存目录清理脚本分享
+                    </div>
+                
+
+                
+                    <div class="article-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="https://cdn.jsdelivr.net/gh/cxxym/tpc/lg_1.svg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author">
+                                <span class="name">Pxiao</span>
+                                
+                                    <span class="author-label">Lv1</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="article-meta-info-container border-box post">
+    <div class="article-meta-info border-box">
+        
+
+
+        
+            <span class="meta-info-item article-create-date">
+                <i class="icon fa-solid fa-calendar-check"></i>&nbsp;
+                <span class="pc">2022-09-28 19:20:37</span>
+                <span class="mobile">2022-09-28 19:20</span>
+            </span>
+
+            <span class="meta-info-item article-update-date">
+                <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                <span class="pc" data-updated="Fri Nov 10 2023 03:18:20 GMT+0800">2023-11-10 03:18:20</span>
+            </span>
+        
+
+        
+
+        
+            <span class="article-tag meta-info-item border-box">
+                <i class="icon fas fa-tags"></i>&nbsp;
+                <ul class="article-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/shell/">shell</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+            <span class="meta-info-item article-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>839 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item article-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>3 分钟</span>
+            </span>
+        
+        
+            <span class="meta-info-item article-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
+    
+</div>
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="article-content keep-markdown-body">
+                    
+
+                    <p>因为长时间饱受垃圾文件折磨，又不想过多耗电，于是我便乱写了“垃圾文件清理脚本”它具有以下功能：<br>1.清理储存目录（保持干净整洁。<br>2.白名单功能（脚本不会删除白名单内文件。<br>3.日志记录。<br>它的缺点:<br>1.脚本内没有添加识别脚本自身、配置文件及日志功能，所以需在配置文件添加。<br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://shp.qpic.cn/collector/3216627800/98a608ed-bab8-4303-abfd-6f808c6ec4dc/0"
+                     
+                ></p>
+<h1 id="声明：使用本脚本造成任何“财产损失”及“文件丢失”与“作者”无关。"><a href="#声明：使用本脚本造成任何“财产损失”及“文件丢失”与“作者”无关。" class="headerlink" title="声明：使用本脚本造成任何“财产损失”及“文件丢失”与“作者”无关。"></a>声明：使用本脚本造成任何“财产损失”及“文件丢失”与“作者”无关。</h1><h2 id="脚本及其配置文件只能放置在储存目录，不能放置在其他目录，否则你的储存目录内“-storage-emulated-0-”所有文件可能被删除。"><a href="#脚本及其配置文件只能放置在储存目录，不能放置在其他目录，否则你的储存目录内“-storage-emulated-0-”所有文件可能被删除。" class="headerlink" title="脚本及其配置文件只能放置在储存目录，不能放置在其他目录，否则你的储存目录内“&#x2F;storage&#x2F;emulated&#x2F;0&#x2F;”所有文件可能被删除。"></a>脚本及其配置文件只能放置在储存目录，不能放置在其他目录，否则你的储存目录内“&#x2F;storage&#x2F;emulated&#x2F;0&#x2F;”所有文件可能被删除。</h2><h2 id="使用教程如下"><a href="#使用教程如下" class="headerlink" title="使用教程如下"></a>使用教程如下</h2><h3 id="首先复制下面源码"><a href="#首先复制下面源码" class="headerlink" title="首先复制下面源码"></a>首先复制下面源码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment">#作者 panxiao</span></span><br><span class="line"><span class="comment"># 判断是否root执行</span></span><br><span class="line"><span class="keyword">if</span> [ `<span class="built_in">id</span> -u` -ne 0 ];<span class="keyword">then</span></span><br><span class="line"><span class="comment"># 开始计时</span></span><br><span class="line">start_time=$(<span class="built_in">date</span> +%s.%N)</span><br><span class="line"><span class="comment"># 创建一个文件来储存白名单中的文件名</span></span><br><span class="line"><span class="built_in">touch</span> whitelist.txt</span><br><span class="line"><span class="comment"># 获取白名单列表的行数及所有文件数量</span></span><br><span class="line">white_lines=$(<span class="built_in">cat</span> whitelist.txt | <span class="built_in">wc</span> -l)</span><br><span class="line">all_files=$(<span class="built_in">ls</span> -A /storage/emulated/0 | <span class="built_in">wc</span> -l)</span><br><span class="line"><span class="comment"># 设置删除计数和删除记录文件路径</span></span><br><span class="line">deleted=0</span><br><span class="line">log_path=<span class="string">&quot;/sdcard/deleted_files.log&quot;</span></span><br><span class="line"><span class="comment"># 定义并发线程数</span></span><br><span class="line">thread_num=10</span><br><span class="line"><span class="comment"># 在日志文件中写入当前时间和操作说明</span></span><br><span class="line"><span class="comment">#echo &quot;$(date &#x27;+%Y-%m-%d %H:%M:%S&#x27;) - 删除非白名单文件&quot; &gt;&gt; $log_path</span></span><br><span class="line"><span class="comment"># 遍历所有文件并删除非白名单文件</span></span><br><span class="line"><span class="keyword">for</span> file_name <span class="keyword">in</span> $(<span class="built_in">ls</span> -a /storage/emulated/0); <span class="keyword">do</span></span><br><span class="line">  <span class="comment"># 如果文件不在白名单中，则删除</span></span><br><span class="line">  <span class="keyword">if</span> ! grep -q <span class="string">&quot;<span class="variable">$file_name</span>&quot;</span> whitelist.txt; <span class="keyword">then</span></span><br><span class="line">    ((deleted++))</span><br><span class="line"><span class="comment"># 在新线程中删除文件</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="built_in">rm</span> -rf <span class="string">&quot;/storage/emulated/0/<span class="variable">$file_name</span>&quot;</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$deleted</span>=&gt;删除<span class="variable">$file_name</span>&quot;</span></span><br><span class="line">    <span class="comment">#echo &quot;$(date &#x27;+%Y-%m-%d %H:%M:%S&#x27;) - 删除文件：$file_name&quot; &gt;&gt; $log_path</span></span><br><span class="line">  &#125; &amp;</span><br><span class="line">  <span class="comment"># 控制并发线程数量</span></span><br><span class="line"> <span class="comment">#while [ $(jobs | wc -l) -ge $thread_num ]; do</span></span><br><span class="line">  <span class="comment">#   sleep 1</span></span><br><span class="line"><span class="comment">#   done</span></span><br><span class="line">  <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line"><span class="comment"># 等待所有线程结束</span></span><br><span class="line"><span class="built_in">wait</span></span><br><span class="line"><span class="comment"># 停止计时</span></span><br><span class="line">end_time=$(<span class="built_in">date</span> +%s.%N)</span><br><span class="line">elapsed=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$end_time</span> - <span class="variable">$start_time</span>&quot;</span> | bc)</span><br><span class="line"><span class="comment"># 格式化时间，确保输出3位数</span></span><br><span class="line">formatted_time=$(<span class="built_in">printf</span> <span class="string">&quot;%.3f&quot;</span> <span class="variable">$elapsed</span>)</span><br><span class="line"><span class="comment"># 输出删除统计信息和完成提示</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;删除完成！共删除了 <span class="variable">$deleted</span> 个文件用时<span class="variable">$formatted_time</span>秒（不包括白名单中的文件）&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;详细记录请查看：<span class="variable">$log_path</span>&quot;</span></span><br><span class="line"><span class="comment"># 如果为root执行则提示并退出脚本</span></span><br><span class="line">   <span class="keyword">else</span></span><br><span class="line">    i=0</span><br><span class="line">    <span class="keyword">while</span> ((i&lt;=<span class="number">20</span>)) <span class="keyword">do</span></span><br><span class="line">      ((i++))</span><br><span class="line">      <span class="built_in">echo</span> <span class="string">&quot;禁止使用root运行-此操作可能使设备变砖!&quot;</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line"><span class="keyword">fi</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="使用mt管理器在储存目录“-storage-emulated-0-”随便创建一个后缀为sh的文件"><a href="#使用mt管理器在储存目录“-storage-emulated-0-”随便创建一个后缀为sh的文件" class="headerlink" title="使用mt管理器在储存目录“&#x2F;storage&#x2F;emulated&#x2F;0&#x2F;”随便创建一个后缀为sh的文件"></a>使用mt管理器在储存目录“&#x2F;storage&#x2F;emulated&#x2F;0&#x2F;”随便创建一个后缀为sh的文件</h3><h3 id="粘贴复制的代码到创建的文件并保存"><a href="#粘贴复制的代码到创建的文件并保存" class="headerlink" title="粘贴复制的代码到创建的文件并保存"></a>粘贴复制的代码到创建的文件并保存</h3><h3 id="执行该文件"><a href="#执行该文件" class="headerlink" title="执行该文件"></a>执行该文件</h3><p>第一次执行该文件，它会生成“whitelist.txt”文件，然后必须添加重要文件的“文件名”一行一个不得有空格否则配置文件白名单失效，你的文件会被删除，注意添加脚本和白名单文件的文件名。<br><img  
+                     lazyload
+                     alt="image"
+                     data-src="https://shp.qpic.cn/collector/3216627800/98a608ed-bab8-4303-abfd-6f808c6ec4dc/0"
+                     
+                ></p>
+<h3 id="配置文件配置完成之后，你就可以执行你创建的清理文件了。"><a href="#配置文件配置完成之后，你就可以执行你创建的清理文件了。" class="headerlink" title="配置文件配置完成之后，你就可以执行你创建的清理文件了。"></a>配置文件配置完成之后，你就可以执行你创建的清理文件了。</h3><h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><h3 id="1-如果你有重要文件请不要使用此脚本"><a href="#1-如果你有重要文件请不要使用此脚本" class="headerlink" title="1.如果你有重要文件请不要使用此脚本"></a>1.如果你有重要文件请不要使用此脚本</h3><h3 id="2-请不要使用root执行脚本可能删除你的根目录文件"><a href="#2-请不要使用root执行脚本可能删除你的根目录文件" class="headerlink" title="2.请不要使用root执行脚本可能删除你的根目录文件"></a>2.请不要使用root执行脚本可能删除你的根目录文件</h3><h3 id="3-可能存在未知bug，作者能力有限暂未发现"><a href="#3-可能存在未知bug，作者能力有限暂未发现" class="headerlink" title="3.可能存在未知bug，作者能力有限暂未发现"></a>3.可能存在未知bug，作者能力有限暂未发现</h3><h3 id="4-使用本脚本造成任何财产损失及文件丢失作者无关"><a href="#4-使用本脚本造成任何财产损失及文件丢失作者无关" class="headerlink" title="4.使用本脚本造成任何财产损失及文件丢失作者无关"></a>4.使用本脚本造成任何财产损失及文件丢失作者无关</h3>
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/shell/">shell</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="article-nav">
+                        
+                            <div class="article-prev">
+                                <a class="prev"
+                                   rel="prev"
+                                   href="/2023/11/06/%E8%B0%B7%E6%AD%8C%E7%9B%B8%E6%9C%BA%E6%8B%8D%E6%91%84/"
+                                   title="谷歌相机拍摄"
+                                >
+                                    <span class="left arrow-icon flex-center">
+                                      <i class="fas fa-chevron-left"></i>
+                                    </span>
+                                            <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">谷歌相机拍摄</span>
+                                        <span class="post-nav-item">上一篇</span>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                        
+                            <div class="article-next">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2022/09/22/%E4%BD%BF%E7%94%A8termux%E5%AE%89%E8%A3%85hexo%E5%B9%B6%E4%B8%8A%E4%BC%A0github/"
+                                   title="使用Termux安装hexo博客框架并部署到Github"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">使用Termux安装hexo博客框架并部署到Github</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                            <span class="right arrow-icon flex-center">
+                                      <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+
+
+
+
+                
+            </div>
+        </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%EF%BC%9A%E4%BD%BF%E7%94%A8%E6%9C%AC%E8%84%9A%E6%9C%AC%E9%80%A0%E6%88%90%E4%BB%BB%E4%BD%95%E2%80%9C%E8%B4%A2%E4%BA%A7%E6%8D%9F%E5%A4%B1%E2%80%9D%E5%8F%8A%E2%80%9C%E6%96%87%E4%BB%B6%E4%B8%A2%E5%A4%B1%E2%80%9D%E4%B8%8E%E2%80%9C%E4%BD%9C%E8%80%85%E2%80%9D%E6%97%A0%E5%85%B3%E3%80%82"><span class="nav-text">声明：使用本脚本造成任何“财产损失”及“文件丢失”与“作者”无关。</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8F%AA%E8%83%BD%E6%94%BE%E7%BD%AE%E5%9C%A8%E5%82%A8%E5%AD%98%E7%9B%AE%E5%BD%95%EF%BC%8C%E4%B8%8D%E8%83%BD%E6%94%BE%E7%BD%AE%E5%9C%A8%E5%85%B6%E4%BB%96%E7%9B%AE%E5%BD%95%EF%BC%8C%E5%90%A6%E5%88%99%E4%BD%A0%E7%9A%84%E5%82%A8%E5%AD%98%E7%9B%AE%E5%BD%95%E5%86%85%E2%80%9C-storage-emulated-0-%E2%80%9D%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%8F%AF%E8%83%BD%E8%A2%AB%E5%88%A0%E9%99%A4%E3%80%82"><span class="nav-text">脚本及其配置文件只能放置在储存目录，不能放置在其他目录，否则你的储存目录内“&#x2F;storage&#x2F;emulated&#x2F;0&#x2F;”所有文件可能被删除。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B%E5%A6%82%E4%B8%8B"><span class="nav-text">使用教程如下</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A6%96%E5%85%88%E5%A4%8D%E5%88%B6%E4%B8%8B%E9%9D%A2%E6%BA%90%E7%A0%81"><span class="nav-text">首先复制下面源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8mt%E7%AE%A1%E7%90%86%E5%99%A8%E5%9C%A8%E5%82%A8%E5%AD%98%E7%9B%AE%E5%BD%95%E2%80%9C-storage-emulated-0-%E2%80%9D%E9%9A%8F%E4%BE%BF%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%90%8E%E7%BC%80%E4%B8%BAsh%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-text">使用mt管理器在储存目录“&#x2F;storage&#x2F;emulated&#x2F;0&#x2F;”随便创建一个后缀为sh的文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B2%98%E8%B4%B4%E5%A4%8D%E5%88%B6%E7%9A%84%E4%BB%A3%E7%A0%81%E5%88%B0%E5%88%9B%E5%BB%BA%E7%9A%84%E6%96%87%E4%BB%B6%E5%B9%B6%E4%BF%9D%E5%AD%98"><span class="nav-text">粘贴复制的代码到创建的文件并保存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E8%AF%A5%E6%96%87%E4%BB%B6"><span class="nav-text">执行该文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE%E5%AE%8C%E6%88%90%E4%B9%8B%E5%90%8E%EF%BC%8C%E4%BD%A0%E5%B0%B1%E5%8F%AF%E4%BB%A5%E6%89%A7%E8%A1%8C%E4%BD%A0%E5%88%9B%E5%BB%BA%E7%9A%84%E6%B8%85%E7%90%86%E6%96%87%E4%BB%B6%E4%BA%86%E3%80%82"><span class="nav-text">配置文件配置完成之后，你就可以执行你创建的清理文件了。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-text">注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%A6%82%E6%9E%9C%E4%BD%A0%E6%9C%89%E9%87%8D%E8%A6%81%E6%96%87%E4%BB%B6%E8%AF%B7%E4%B8%8D%E8%A6%81%E4%BD%BF%E7%94%A8%E6%AD%A4%E8%84%9A%E6%9C%AC"><span class="nav-text">1.如果你有重要文件请不要使用此脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%AF%B7%E4%B8%8D%E8%A6%81%E4%BD%BF%E7%94%A8root%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC%E5%8F%AF%E8%83%BD%E5%88%A0%E9%99%A4%E4%BD%A0%E7%9A%84%E6%A0%B9%E7%9B%AE%E5%BD%95%E6%96%87%E4%BB%B6"><span class="nav-text">2.请不要使用root执行脚本可能删除你的根目录文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E6%9C%AA%E7%9F%A5bug%EF%BC%8C%E4%BD%9C%E8%80%85%E8%83%BD%E5%8A%9B%E6%9C%89%E9%99%90%E6%9A%82%E6%9C%AA%E5%8F%91%E7%8E%B0"><span class="nav-text">3.可能存在未知bug，作者能力有限暂未发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E4%BD%BF%E7%94%A8%E6%9C%AC%E8%84%9A%E6%9C%AC%E9%80%A0%E6%88%90%E4%BB%BB%E4%BD%95%E8%B4%A2%E4%BA%A7%E6%8D%9F%E5%A4%B1%E5%8F%8A%E6%96%87%E4%BB%B6%E4%B8%A2%E5%A4%B1%E4%BD%9C%E8%80%85%E6%97%A0%E5%85%B3"><span class="nav-text">4.使用本脚本造成任何财产损失及文件丢失作者无关</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom border-box">
+            
+<footer class="footer border-box">
+    <div class="border-box website-info-box default">
+        
+            <div class="copyright-info info-item default">
+                &copy;&nbsp;<span>2022</span>&nbsp;-&nbsp;2023
+                
+                    &nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;&nbsp;<a href="/">Pxiao</a>
+                
+            </div>
+
+            <div class="theme-info info-item default">
+                由&nbsp;<a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;驱动&nbsp;&&nbsp;主题&nbsp;<a class="keep-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep</a>
             </div>
 
             
-          </article>
+
+            
+                <div class="deploy-info info-item default">
+                    
+                        本站由 <span class="tooltip" data-tooltip-content="GitHub Pages"><img src="/images/deploy-provider/github.png"></span> 提供部署服务
+                        
+                </div>
+            
+        
+
+        <div class="count-item info-item default">
+            
+                <span class="count-box border-box word">
+                    <span class="item-type border-box">总字数</span>
+                    <span class="item-value border-box word">1.8k</span>
+                </span>
+            
+
+            
+                <span class="count-box border-box uv">
+                    <span class="item-type border-box">访客数</span>
+                    <span class="item-value border-box uv" id="busuanzi_value_site_uv"></span>
+                </span>
+            
+
+            
+                <span class="count-box border-box pv">
+                    <span class="item-type border-box">访问量</span>
+                    <span class="item-value border-box pv" id="busuanzi_value_site_pv"></span>
+                </span>
+            
         </div>
-      </div>
     </div>
+</footer>
 
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>目录</span>
-  </p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
-  </aside>
-
-
-    </div>
-  </div>
-</div>
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
         </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
     </div>
-  </div>
+
+    <!-- post tools -->
+    
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="tools-list border-box">
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+    </ul>
 </div>
 
+        </div>
     
 
-    
-  </main>
+    <!-- side tools -->
+    <div class="side-tools">
+        <div class="side-tools-container border-box ">
+    <ul class="side-tools-list side-tools-show-handle border-box">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
 
-  <footer>
-    <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        
+
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+
+        <li class="tools-item tool-scroll-to-top flex-center show-arrow">
+            <i class="arrow fas fa-arrow-up"></i>
+            <span class="percent"></span>
+        </li>
+    </ul>
+</div>
+
     </div>
-  
-  
-    <div class="statistics">
-  
-  
 
-  
-    
-      <span id="busuanzi_container_site_pv" style="display: none">
-        总访问量 
-        <span id="busuanzi_value_site_pv"></span>
-         次
-      </span>
-    
-    
-      <span id="busuanzi_container_site_uv" style="display: none">
-        总访客数 
-        <span id="busuanzi_value_site_uv"></span>
-         人
-      </span>
-    
-    
-  
+    <!-- image mask -->
+    <div class="zoom-in-image-mask">
+    <img class="zoom-in-image">
 </div>
 
-  
-  
-  
+
+    <!-- local search -->
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="搜索..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="close-popup-btn">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
 </div>
 
-  </footer>
+    
 
-  <!-- Scripts -->
-  
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+    <!-- tablet toc -->
+    
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A3%B0%E6%98%8E%EF%BC%9A%E4%BD%BF%E7%94%A8%E6%9C%AC%E8%84%9A%E6%9C%AC%E9%80%A0%E6%88%90%E4%BB%BB%E4%BD%95%E2%80%9C%E8%B4%A2%E4%BA%A7%E6%8D%9F%E5%A4%B1%E2%80%9D%E5%8F%8A%E2%80%9C%E6%96%87%E4%BB%B6%E4%B8%A2%E5%A4%B1%E2%80%9D%E4%B8%8E%E2%80%9C%E4%BD%9C%E8%80%85%E2%80%9D%E6%97%A0%E5%85%B3%E3%80%82"><span class="nav-text">声明：使用本脚本造成任何“财产损失”及“文件丢失”与“作者”无关。</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC%E5%8F%8A%E5%85%B6%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8F%AA%E8%83%BD%E6%94%BE%E7%BD%AE%E5%9C%A8%E5%82%A8%E5%AD%98%E7%9B%AE%E5%BD%95%EF%BC%8C%E4%B8%8D%E8%83%BD%E6%94%BE%E7%BD%AE%E5%9C%A8%E5%85%B6%E4%BB%96%E7%9B%AE%E5%BD%95%EF%BC%8C%E5%90%A6%E5%88%99%E4%BD%A0%E7%9A%84%E5%82%A8%E5%AD%98%E7%9B%AE%E5%BD%95%E5%86%85%E2%80%9C-storage-emulated-0-%E2%80%9D%E6%89%80%E6%9C%89%E6%96%87%E4%BB%B6%E5%8F%AF%E8%83%BD%E8%A2%AB%E5%88%A0%E9%99%A4%E3%80%82"><span class="nav-text">脚本及其配置文件只能放置在储存目录，不能放置在其他目录，否则你的储存目录内“&#x2F;storage&#x2F;emulated&#x2F;0&#x2F;”所有文件可能被删除。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B%E5%A6%82%E4%B8%8B"><span class="nav-text">使用教程如下</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A6%96%E5%85%88%E5%A4%8D%E5%88%B6%E4%B8%8B%E9%9D%A2%E6%BA%90%E7%A0%81"><span class="nav-text">首先复制下面源码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8mt%E7%AE%A1%E7%90%86%E5%99%A8%E5%9C%A8%E5%82%A8%E5%AD%98%E7%9B%AE%E5%BD%95%E2%80%9C-storage-emulated-0-%E2%80%9D%E9%9A%8F%E4%BE%BF%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%90%8E%E7%BC%80%E4%B8%BAsh%E7%9A%84%E6%96%87%E4%BB%B6"><span class="nav-text">使用mt管理器在储存目录“&#x2F;storage&#x2F;emulated&#x2F;0&#x2F;”随便创建一个后缀为sh的文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B2%98%E8%B4%B4%E5%A4%8D%E5%88%B6%E7%9A%84%E4%BB%A3%E7%A0%81%E5%88%B0%E5%88%9B%E5%BB%BA%E7%9A%84%E6%96%87%E4%BB%B6%E5%B9%B6%E4%BF%9D%E5%AD%98"><span class="nav-text">粘贴复制的代码到创建的文件并保存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E8%AF%A5%E6%96%87%E4%BB%B6"><span class="nav-text">执行该文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E9%85%8D%E7%BD%AE%E5%AE%8C%E6%88%90%E4%B9%8B%E5%90%8E%EF%BC%8C%E4%BD%A0%E5%B0%B1%E5%8F%AF%E4%BB%A5%E6%89%A7%E8%A1%8C%E4%BD%A0%E5%88%9B%E5%BB%BA%E7%9A%84%E6%B8%85%E7%90%86%E6%96%87%E4%BB%B6%E4%BA%86%E3%80%82"><span class="nav-text">配置文件配置完成之后，你就可以执行你创建的清理文件了。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-text">注意事项</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%A6%82%E6%9E%9C%E4%BD%A0%E6%9C%89%E9%87%8D%E8%A6%81%E6%96%87%E4%BB%B6%E8%AF%B7%E4%B8%8D%E8%A6%81%E4%BD%BF%E7%94%A8%E6%AD%A4%E8%84%9A%E6%9C%AC"><span class="nav-text">1.如果你有重要文件请不要使用此脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E8%AF%B7%E4%B8%8D%E8%A6%81%E4%BD%BF%E7%94%A8root%E6%89%A7%E8%A1%8C%E8%84%9A%E6%9C%AC%E5%8F%AF%E8%83%BD%E5%88%A0%E9%99%A4%E4%BD%A0%E7%9A%84%E6%A0%B9%E7%9B%AE%E5%BD%95%E6%96%87%E4%BB%B6"><span class="nav-text">2.请不要使用root执行脚本可能删除你的根目录文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E6%9C%AA%E7%9F%A5bug%EF%BC%8C%E4%BD%9C%E8%80%85%E8%83%BD%E5%8A%9B%E6%9C%89%E9%99%90%E6%9A%82%E6%9C%AA%E5%8F%91%E7%8E%B0"><span class="nav-text">3.可能存在未知bug，作者能力有限暂未发现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E4%BD%BF%E7%94%A8%E6%9C%AC%E8%84%9A%E6%9C%AC%E9%80%A0%E6%88%90%E4%BB%BB%E4%BD%95%E8%B4%A2%E4%BA%A7%E6%8D%9F%E5%A4%B1%E5%8F%8A%E6%96%87%E4%BB%B6%E4%B8%A2%E5%A4%B1%E4%BD%9C%E8%80%85%E6%97%A0%E5%85%B3"><span class="nav-text">4.使用本脚本造成任何财产损失及文件丢失作者无关</span></a></li></ol></li></ol></li></ol>
+    </div>
+</div>
 
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
+            </div>
+        </div>
+    
+</main>
 
 
 
+<!-- common -->
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/js/dark-light-toggle.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/js/libs/anime.min.js"></script>
+
+<!-- local-search -->
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/js/local-search.js"></script>
 
 
-  
-    <script  src="/js/img-lazyload.js" ></script>
-  
+<!-- code-block -->
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/js/code-block.js"></script>
 
 
+<!-- lazyload -->
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/js/lazyload.js"></script>
 
 
-  
+<div class="pjax">
+    
+        <!-- post-helper -->
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/js/post/post-helper.js"></script>
+
+        <!-- toc -->
+        
+            <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/js/post/toc.js"></script>
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
+    
+
+    <!-- category-page -->
+    
+
+    <!-- links-page -->
+    
+</div>
+
+<!-- mermaid -->
+
+
+<!-- pjax -->
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.8.6/source/js/libs/pjax.min.js"></script>
 <script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+        });
 
-    window.tocbot.init(Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc));
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart()
+        });
 
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-      }
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd()
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'))
+            KEEP.initExecute()
+        });
     });
-  });
 </script>
 
 
-  <script  src="https://lib.baomitu.com/prism/1.29.0/components/prism-core.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js" ></script>
-
-  <script  src="https://lib.baomitu.com/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js" ></script>
-
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
 
 
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script  src="/js/local-search.js" ></script>
-
-  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
-
-
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
-
-
-  
-
-  <noscript>
-    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
-  </noscript>
 <script async>window.onload=function(){var a=document.createElement('script'),b=document.getElementsByTagName('script')[0];a.type='text/javascript',a.async=!0,a.src='/sw-register.js?v='+Date.now(),b.parentNode.insertBefore(a,b)};</script></body></html>
