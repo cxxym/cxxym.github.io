@@ -9,7 +9,7 @@
     
     <title>
         
-            归档: 2023 |
+            [半]解决手机重启自动打开USB调试问题 |
         
         讲点啥子
     </title>
@@ -82,7 +82,7 @@
                         </li>
                     
                         <li class="menu-item">
-                            <a class="active"
+                            <a class=""
                                href="/archives"
                             >
                                 归档
@@ -124,7 +124,7 @@
                 </li>
             
                 <li class="drawer-menu-item flex-center">
-                    <a class="active"
+                    <a class=""
                        href="/archives">归档</a>
                 </li>
             
@@ -150,42 +150,178 @@
                 
 
                     <div class="fade-in-down-animation">
-    <div class="archives-container">
-        <div class="archives-timeline border-box">
+    <div class="post-page-container border-box">
+
+        <div class="article-content-container border-box">
+
             
-<div class="archive-list-container border-box">
-    
-        <section class="archive-item border-box">
-            <div class="archive-item-header border-box">
-                <span class="archive-year">2023</span>
-            </div>
-            <ul class="article-list border-box">
+
+            <div class="article-content-bottom border-box">
                 
-                    <li class="article-item border-box">
-                        <span class="article-date border-box">11-23</span>
-                        <a class="article-title border-box text-ellipsis"
-                           href="/2023/11/23/%E5%8D%8A-%E8%A7%A3%E5%86%B3%E9%87%8D%E5%90%AF%E8%87%AA%E5%8A%A8%E6%89%93%E5%BC%80USB%E8%B0%83%E8%AF%95/"
-                        >[半]解决手机重启自动打开USB调试问题</a>
-                    </li>
+                    <div class="article-title">
+                        [半]解决手机重启自动打开USB调试问题
+                    </div>
                 
-                    <li class="article-item border-box">
-                        <span class="article-date border-box">11-06</span>
-                        <a class="article-title border-box text-ellipsis"
-                           href="/2023/11/06/%E8%B0%B7%E6%AD%8C%E7%9B%B8%E6%9C%BA%E6%8B%8D%E6%91%84/"
-                        >谷歌相机拍摄</a>
-                    </li>
+
                 
-            </ul>
-        </section>
+                    <div class="article-header border-box">
+                        
+                            <div class="avatar-box border-box">
+                                <img src="https://cdn.jsdelivr.net/gh/cxxym/tpc/iog.svg">
+                            </div>
+                        
+                        <div class="info-box">
+                            <div class="author">
+                                <span class="name">Pxiao</span>
+                                
+                                    <span class="author-label">炼气</span>
+                                
+                            </div>
+                            <div class="meta-info border-box">
+                                
+
+<div class="article-meta-info-container border-box post">
+    <div class="article-meta-info border-box">
+        
+
+
+        
+            <span class="meta-info-item article-create-date">
+                <i class="icon fa-solid fa-calendar-check"></i>&nbsp;
+                <span class="pc">2023-11-23 22:04:24</span>
+                <span class="mobile">2023-11-23 22:04</span>
+            </span>
+
+            <span class="meta-info-item article-update-date">
+                <i class="icon fa-solid fa-file-pen"></i>&nbsp;
+                <span class="pc" data-updated="Thu Nov 23 2023 22:27:44 GMT+0800">2023-11-23 22:27:44</span>
+            </span>
+        
+
+        
+
+        
+            <span class="article-tag meta-info-item border-box">
+                <i class="icon fas fa-tags"></i>&nbsp;
+                <ul class="article-tag-ul">
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/shell/">shell</a></li>
+                        
+                    
+                            <li class="tag-item"><span class="tag-separator"><i class="icon fas fa-hashtag"></i></span><a href="/tags/kernelsu-magisk%E6%A8%A1%E5%9D%97/">kernelsu/magisk模块</a></li>
+                        
+                    
+                </ul>
+            </span>
+        
+
+        
+        
+            <span class="meta-info-item article-wordcount">
+                <i class="icon fas fa-file-word"></i>&nbsp;<span>235 字</span>
+            </span>
+        
+        
+            <span class="meta-info-item article-min2read">
+                <i class="icon fas fa-clock"></i>&nbsp;<span>1 分钟</span>
+            </span>
+        
+        
+            <span class="meta-info-item article-pv">
+                <i class="icon fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    </div>
+
     
 </div>
 
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="article-content keep-markdown-body">
+                    
+
+                    <h3 id="比比"><a href="#比比" class="headerlink" title="比比"></a>比比</h3><p>某次从colorOS13升级到13.1后发现，USB调试在重启后会自动打开，手动关闭再次重启依旧复现。<br>对于我这种强迫症来说，十分难受。<br>于是我便搜索了关闭USB调试命令，随便找了个模块二改，最终拼出了这垃圾之作</p>
+<h3 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h3><p>而用此模块注意事项如下：<br>1.只在kernelsu上正常使用，未发现不良反应，magisk应该能用，具体自测。<br>2.使用本模块造成所有的损失，与作者无关。<br>3.开机后延迟70多秒，自动关闭USB调试，并往储存目录输出关闭日志。<br>4.如需关闭输出日志，请按照如下注释service.sh文件内此行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/system/bin/sh</span></span><br><span class="line"><span class="built_in">sleep</span> 70s</span><br><span class="line"><span class="comment">#echo &quot;$(date &#x27;+%Y-%m-%d %H:%M:%S&#x27;)&gt;&gt;fuckusbdebug&quot; &gt;&gt; /sdcard/ook.log</span></span><br><span class="line">settings put global adb_enabled 0</span><br></pre></td></tr></table></figure>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>抗揍云连接<br><a class="link"   target="_blank" rel="noopener" href="https://wwp.lanzoup.com/iP9NP1frlz6b" >https://wwp.lanzoup.com/iP9NP1frlz6b<i class="fas fa-external-link-alt"></i></a><br>密码：px00</p>
+
+                </div>
+
+                
+
+                <div class="post-bottom-tags-and-share border-box">
+                    <div>
+                        
+                            <ul class="post-tags-box border-box">
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/shell/">shell</a>
+                                    </li>
+                                
+                                    <li class="tag-item border-box">
+                                        <i class="icon fas fa-hashtag"></i>&nbsp;<a href="/tags/kernelsu-magisk%E6%A8%A1%E5%9D%97/">kernelsu/magisk模块</a>
+                                    </li>
+                                
+                            </ul>
+                        
+                    </div>
+                    <div>
+                        
+                    </div>
+                </div>
+
+                
+
+                
+                    <div class="article-nav">
+                        
+                        
+                            <div class="article-next">
+                                <a class="next"
+                                   rel="next"
+                                   href="/2023/11/06/%E8%B0%B7%E6%AD%8C%E7%9B%B8%E6%9C%BA%E6%8B%8D%E6%91%84/"
+                                   title="谷歌相机拍摄"
+                                >
+                                    <span class="title flex-center">
+                                        <span class="post-nav-title-item text-ellipsis">谷歌相机拍摄</span>
+                                        <span class="post-nav-item">下一篇</span>
+                                    </span>
+                                            <span class="right arrow-icon flex-center">
+                                      <i class="fas fa-chevron-right"></i>
+                                    </span>
+                                </a>
+                            </div>
+                        
+                    </div>
+                
+
+                
+                    
+
+
+
+
+
+
+                
+            </div>
         </div>
+
+        
+            <div class="pc-post-toc right-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E6%AF%94"><span class="nav-text">比比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E6%96%87"><span class="nav-text">正文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD"><span class="nav-text">下载</span></a></li></ol>
     </div>
-    
+</div>
 
-
-
+            </div>
+        
+    </div>
 </div>
 
 
@@ -251,6 +387,23 @@
 
     <!-- post tools -->
     
+        <div class="post-tools right-toc">
+            <div class="post-tools-container border-box">
+    <ul class="tools-list border-box">
+        <!-- PC TOC show toggle -->
+        
+            <li class="tools-item flex-center toggle-show-toc">
+                <i class="fas fa-list"></i>
+            </li>
+        
+
+        <!-- PC go comment -->
+        
+    </ul>
+</div>
+
+        </div>
+    
 
     <!-- side tools -->
     <div class="side-tools">
@@ -277,6 +430,10 @@
     </ul>
 
     <ul class="exposed-tools-list border-box">
+        
+            <li class="tools-item toggle-show-toc-tablet flex-center">
+                <i class="fas fa-list"></i>
+            </li>
         
 
         
@@ -334,6 +491,17 @@
 
     <!-- tablet toc -->
     
+        <div class="tablet-post-toc-mask">
+            <div class="tablet-post-toc">
+                <div class="post-toc-wrap border-box">
+    <div class="post-toc border-box">
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AF%94%E6%AF%94"><span class="nav-text">比比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E6%96%87"><span class="nav-text">正文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E8%BD%BD"><span class="nav-text">下载</span></a></li></ol>
+    </div>
+</div>
+
+            </div>
+        </div>
+    
 </main>
 
 
@@ -357,6 +525,20 @@
 
 
 <div class="pjax">
+    
+        <!-- post-helper -->
+        <script src="//unpkg.com/hexo-theme-keep@3.8.6/source/js/post/post-helper.js"></script>
+
+        <!-- toc -->
+        
+            <script src="//unpkg.com/hexo-theme-keep@3.8.6/source/js/post/toc.js"></script>
+        
+
+        <!-- copyright-info -->
+        
+
+        <!-- share -->
+        
     
 
     <!-- category-page -->
